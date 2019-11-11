@@ -1,0 +1,25 @@
+{
+    "name": "wyvern-lang",
+    "displayName": "Wyvern Lang",
+    "description": "Syntax highlighting for the Wyvern programming language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.40.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "wyvern",
+            "aliases": ["Wyvern", "wyvern"],
+            "extensions": [".wyv",".wyt"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "wyvern",
+            "scopeName": "source.wyvern",
+            "path": "./syntaxes/wyvern.tmLanguage.json"
+        }]
+    }
+}
