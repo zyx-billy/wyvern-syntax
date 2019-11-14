@@ -2,15 +2,14 @@ $schema: "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlangu
 name: Wyvern
 scopeName: source.wyvern
 patterns:
-- {include: "#comment"}
+- {include: "#comments"}
 - {include: "#keywords"}
-- {include: "#field-def"}
-- {include: "#function-def"}
+- {include: "#definitions"}
 - {include: "#match-ctrl"}
 - {include: "#expression"}
 repository:
   # comments
-  comment:
+  comments:
     patterns:
     - {include: "#line-comment"}
     - {include: "#block-comment"}
@@ -28,6 +27,8 @@ repository:
     patterns:
     - name: keyword.control.wyvern
       match: \b(if|elif|else)\b
+    - name: keyword.operator.new.wyvern
+      match: \bnew\b
     - name: keyword.operator.math.wyvern
       match: (\+|-|\*|\/)
     - name: meta.keyword.operator.match.wyvern
@@ -52,9 +53,16 @@ repository:
       "2": {name: storage.type.wyvern}
 
   # definitions
+  definitions:
+    patterns:
+    - {include: "#field-def"}
+    - {include: "#function-def"}
+    - {include: "#objtype-def"}
+    - {include: "#datatype-def"}
+
   field-def:
     name: meta.definition.field.wyvern
-    match: \b(val|var)\s+($$ident$$)(?:\s*:\s*($$type$$))?\s*(=)
+    match: \b(val|var)\s+($$ident$$)(?:\s*:\s*($$type$$))?\s*(=)?
     captures:
       "1": {name: storage.modifier.$1.wyvern}
       "2": {name: entity.name.variable.wyvern}
@@ -62,17 +70,34 @@ repository:
       "4": {name: keyword.operator.assignment.wyvern}
 
   function-def:
-    name: meta.definition.function.wyvern
-    # recursive regex definition for args list to make sure parentheses match
-    match: \b(def)\s+($$ident$$)\s*\((?<args>(?>[^()]|\(\g<args>\))*)\)\s*:\s*((?:[a-zA-Z0-9\.\*\[\] ]|->|=>)+)
+    patterns:
+    - name: meta.definition.function.wyvern
+      # recursive regex definition for args list to make sure parentheses match
+      match: \b(def)\s+($$ident$$)\s*\($$args$$\)\s*:\s*($$type$$)
+      captures:
+        "1": {name: storage.modifier.def.wyvern}
+        "2": {name: entity.name.function.wyvern}
+        "3":
+          name: meta.function.arg-list.wyvern
+          patterns:
+          - {include: "#comments"}
+          - {include: "#function-param"}
+        "4": {name: storage.type.wyvern}
+
+  objtype-def:
+    name: meta.definition.type.wyvern
+    match: \b(?>(resource)\s+)?(type)\s+($$ident$$)
     captures:
-      "1": {name: storage.modifier.def.wyvern}
-      "2": {name: entity.name.function.wyvern}
-      "3":
-        name: meta.function.arg-list.wyvern
-        patterns:
-        - {include: "#function-param"}
-      "4": {name: storage.type.wyvern}
+      "1": {name: storage.modifier.resource.wyvern}
+      "2": {name: storage.modifier.type.wyvern}
+      "3": {name: entity.name.type.wyvern}
+
+  datatype-def:
+    name: meta.definition.datatype.wyvern
+    match: \b(datatype)\s+($$ident$$)
+    captures:
+      "1": {name: storage.modifier.datatype.wyvern}
+      "2": {name: entity.name.type.wyvern}
 
   # control
   match-ctrl:
@@ -88,9 +113,11 @@ repository:
   expression:
     name: meta.expression.wyvern
     patterns:
-    - {include: "#function-call-expression"}
+    - {include: "#comments"}
+    - {include: "#keywords"}
     - {include: "#constant"}
     - {include: "#strings"}
+    - {include: "#function-call-expression"}
     - {include: "#lambda-expression-with-parens"}
 
   constant:
@@ -110,18 +137,19 @@ repository:
 
   function-call-expression:
     name: meta.expression.function-call.wyvern
-    begin: \b($$ident$$)\(
-    beginCaptures:
+    match: \b($$ident$$)\($$args$$\)
+    captures:
       "1": {name: entity.name.function.wyvern}
-    end: \)
-    patterns:
-    - {include: "#expression"}
+      "2":
+        name: meta.expression.function-call.arg-list.wyvern
+        patterns:
+        - {include: "#expression"}
   
   lambda-expression-with-parens:
     patterns:
       # lambda expressions without parens are included in the keywords rule (with match)
     - name: meta.expression.lambda.wyvern
-      match: \((?<args>(?>[^()]|\(\g<args>\))*)\)\s*(=>)
+      match: \($$args$$\)\s*(=>)
       captures:
         "1":
           name: meta.expression.lambda.arg-list.wyvern

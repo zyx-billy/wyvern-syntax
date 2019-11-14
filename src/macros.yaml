@@ -1,4 +1,5 @@
 # WARNING: macros should must not contain capture groups
-path: (?:[a-zA-Z_](\w|\.)*)
+path: (?:[a-zA-Z_](?:\w|\.)*)
 ident: (?:[a-zA-Z_]\w*)
 type: (?:[a-zA-Z0-9\.\*\[\]()_ ]|->|=>)+
+args: (?<args>(?>[^()/]|\(\g<args>\))*)

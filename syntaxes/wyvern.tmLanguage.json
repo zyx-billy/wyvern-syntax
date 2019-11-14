@@ -4,16 +4,13 @@
   "scopeName": "source.wyvern",
   "patterns": [
     {
-      "include": "#comment"
+      "include": "#comments"
     },
     {
       "include": "#keywords"
     },
     {
-      "include": "#field-def"
-    },
-    {
-      "include": "#function-def"
+      "include": "#definitions"
     },
     {
       "include": "#match-ctrl"
@@ -23,7 +20,7 @@
     }
   ],
   "repository": {
-    "comment": {
+    "comments": {
       "patterns": [
         {
           "include": "#line-comment"
@@ -49,12 +46,16 @@
           "match": "\\b(if|elif|else)\\b"
         },
         {
+          "name": "keyword.operator.new.wyvern",
+          "match": "\\bnew\\b"
+        },
+        {
           "name": "keyword.operator.math.wyvern",
           "match": "(\\+|-|\\*|\\/)"
         },
         {
           "name": "meta.keyword.operator.match.wyvern",
-          "match": "(:)\\s*(?:[a-zA-Z_](\\w|\\.)*)\\s*(=>)",
+          "match": "(:)\\s*(?:[a-zA-Z_](?:\\w|\\.)*)\\s*(=>)",
           "captures": {
             "1": {
               "name": "keyword.operator.match.option.colon.wyvern"
@@ -87,9 +88,25 @@
         }
       }
     },
+    "definitions": {
+      "patterns": [
+        {
+          "include": "#field-def"
+        },
+        {
+          "include": "#function-def"
+        },
+        {
+          "include": "#objtype-def"
+        },
+        {
+          "include": "#datatype-def"
+        }
+      ]
+    },
     "field-def": {
       "name": "meta.definition.field.wyvern",
-      "match": "\\b(val|var)\\s+((?:[a-zA-Z_]\\w*))(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]()_ ]|->|=>)+))?\\s*(=)",
+      "match": "\\b(val|var)\\s+((?:[a-zA-Z_]\\w*))(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]()_ ]|->|=>)+))?\\s*(=)?",
       "captures": {
         "1": {
           "name": "storage.modifier.$1.wyvern"
@@ -106,25 +123,59 @@
       }
     },
     "function-def": {
-      "name": "meta.definition.function.wyvern",
-      "match": "\\b(def)\\s+((?:[a-zA-Z_]\\w*))\\s*\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\] ]|->|=>)+)",
+      "patterns": [
+        {
+          "name": "meta.definition.function.wyvern",
+          "match": "\\b(def)\\s+((?:[a-zA-Z_]\\w*))\\s*\\((?<args>(?>[^()/]|\\(\\g<args>\\))*)\\)\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]()_ ]|->|=>)+)",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.def.wyvern"
+            },
+            "2": {
+              "name": "entity.name.function.wyvern"
+            },
+            "3": {
+              "name": "meta.function.arg-list.wyvern",
+              "patterns": [
+                {
+                  "include": "#comments"
+                },
+                {
+                  "include": "#function-param"
+                }
+              ]
+            },
+            "4": {
+              "name": "storage.type.wyvern"
+            }
+          }
+        }
+      ]
+    },
+    "objtype-def": {
+      "name": "meta.definition.type.wyvern",
+      "match": "\\b(?>(resource)\\s+)?(type)\\s+((?:[a-zA-Z_]\\w*))",
       "captures": {
         "1": {
-          "name": "storage.modifier.def.wyvern"
+          "name": "storage.modifier.resource.wyvern"
         },
         "2": {
-          "name": "entity.name.function.wyvern"
+          "name": "storage.modifier.type.wyvern"
         },
         "3": {
-          "name": "meta.function.arg-list.wyvern",
-          "patterns": [
-            {
-              "include": "#function-param"
-            }
-          ]
+          "name": "entity.name.type.wyvern"
+        }
+      }
+    },
+    "datatype-def": {
+      "name": "meta.definition.datatype.wyvern",
+      "match": "\\b(datatype)\\s+((?:[a-zA-Z_]\\w*))",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.datatype.wyvern"
         },
-        "4": {
-          "name": "storage.type.wyvern"
+        "2": {
+          "name": "entity.name.type.wyvern"
         }
       }
     },
@@ -147,13 +198,19 @@
       "name": "meta.expression.wyvern",
       "patterns": [
         {
-          "include": "#function-call-expression"
+          "include": "#comments"
+        },
+        {
+          "include": "#keywords"
         },
         {
           "include": "#constant"
         },
         {
           "include": "#strings"
+        },
+        {
+          "include": "#function-call-expression"
         },
         {
           "include": "#lambda-expression-with-parens"
@@ -185,24 +242,26 @@
     },
     "function-call-expression": {
       "name": "meta.expression.function-call.wyvern",
-      "begin": "\\b((?:[a-zA-Z_]\\w*))\\(",
-      "beginCaptures": {
+      "match": "\\b((?:[a-zA-Z_]\\w*))\\((?<args>(?>[^()/]|\\(\\g<args>\\))*)\\)",
+      "captures": {
         "1": {
           "name": "entity.name.function.wyvern"
+        },
+        "2": {
+          "name": "meta.expression.function-call.arg-list.wyvern",
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
         }
-      },
-      "end": "\\)",
-      "patterns": [
-        {
-          "include": "#expression"
-        }
-      ]
+      }
     },
     "lambda-expression-with-parens": {
       "patterns": [
         {
           "name": "meta.expression.lambda.wyvern",
-          "match": "\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*(=>)",
+          "match": "\\((?<args>(?>[^()/]|\\(\\g<args>\\))*)\\)\\s*(=>)",
           "captures": {
             "1": {
               "name": "meta.expression.lambda.arg-list.wyvern",
