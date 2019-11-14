@@ -10,16 +10,30 @@
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "wyvern",
-            "aliases": ["Wyvern", "wyvern"],
-            "extensions": [".wyv",".wyt"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "wyvern",
-            "scopeName": "source.wyvern",
-            "path": "./syntaxes/wyvern.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "wyvern",
+                "aliases": [
+                    "Wyvern",
+                    "wyvern"
+                ],
+                "extensions": [
+                    ".wyv",
+                    ".wyt"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "wyvern",
+                "scopeName": "source.wyvern",
+                "path": "./syntaxes/wyvern.tmLanguage.json"
+            }
+        ]
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "js-yaml": "^3.13.1"
     }
 }
