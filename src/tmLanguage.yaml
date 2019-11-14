@@ -30,8 +30,8 @@ repository:
       match: \b(if|elif|else)\b
     - name: keyword.operator.math.wyvern
       match: (\+|-|\*|\/)
-    - name: meta.keyword.operator.lambda.wyvern
-      match: (:)\s*[a-zA-Z][a-zA-Z0-9\.]*\s*(=>)
+    - name: meta.keyword.operator.match.wyvern
+      match: (:)\s*$$path$$\s*(=>)
       captures:
         "1": {name: keyword.operator.match.option.colon.wyvern}
         "2": {name: keyword.operator.match.option.arrow.wyvern}
@@ -39,14 +39,14 @@ repository:
   # types
   type-annotation:
     name: meta.storage.type.wyvern
-    match: :\s*((?:[a-zA-Z0-9\.\*\[\]() ]|->|=>)+)
+    match: :\s*($$type$$)
     captures:
       "1": {name: storage.type.wyvern}
 
   # parameters of a function definition
   function-param:
     name: meta.function.parameter.wyvern
-    match: ([a-zA-Z]\w*)(?:\s*:\s*((?:[a-zA-Z0-9\.\*\[\]() ]|->|=>)+))?
+    match: ($$ident$$)(?:\s*:\s*($$type$$))?
     captures:
       "1": {name: variable.parameter.wyvern}
       "2": {name: storage.type.wyvern}
@@ -54,7 +54,7 @@ repository:
   # definitions
   field-def:
     name: meta.definition.field.wyvern
-    match: \b(val|var)\s+([a-zA-Z]\w*)(?:\s*:\s*((?:[a-zA-Z0-9\.\*\[\]() ]|->|=>)+))?\s*(=)
+    match: \b(val|var)\s+($$ident$$)(?:\s*:\s*($$type$$))?\s*(=)
     captures:
       "1": {name: storage.modifier.$1.wyvern}
       "2": {name: entity.name.variable.wyvern}
@@ -64,7 +64,7 @@ repository:
   function-def:
     name: meta.definition.function.wyvern
     # recursive regex definition for args list to make sure parentheses match
-    match: \b(def)\s+([a-zA-Z]\w*)\s*\((?<args>(?>[^()]|\(\g<args>\))*)\)\s*:\s*((?:[a-zA-Z0-9\.\*\[\] ]|->|=>)+)
+    match: \b(def)\s+($$ident$$)\s*\((?<args>(?>[^()]|\(\g<args>\))*)\)\s*:\s*((?:[a-zA-Z0-9\.\*\[\] ]|->|=>)+)
     captures:
       "1": {name: storage.modifier.def.wyvern}
       "2": {name: entity.name.function.wyvern}
@@ -110,7 +110,7 @@ repository:
 
   function-call-expression:
     name: meta.expression.function-call.wyvern
-    begin: \b([a-zA-Z]\w*)\(
+    begin: \b($$ident$$)\(
     beginCaptures:
       "1": {name: entity.name.function.wyvern}
     end: \)
@@ -118,13 +118,19 @@ repository:
     - {include: "#expression"}
   
   lambda-expression-with-parens:
-    # lambda expressions without parens are included in the keywords rule (with match)
-    name: meta.expression.lambda.wyvern
-    match: \((?<args>(?>[^()]|\(\g<args>\))*)\)\s*(=>)
-    captures:
-      "1":
-        name: meta.expression.lambda.arg-list.wyvern
-        patterns:
-        - {include: "#function-param"}
-      "2": {name: keyword.language.lambda.arrow.wyvern}
-    
+    patterns:
+      # lambda expressions without parens are included in the keywords rule (with match)
+    - name: meta.expression.lambda.wyvern
+      match: \((?<args>(?>[^()]|\(\g<args>\))*)\)\s*(=>)
+      captures:
+        "1":
+          name: meta.expression.lambda.arg-list.wyvern
+          patterns:
+          - {include: "#function-param"}
+        "2": {name: keyword.language.lambda.arrow.wyvern}
+    - name: meta.expression.lambda.wyvern
+      match: \b($$ident$$)\s*(=>)
+      captures:
+        "1": {name: variable.parameter.wyvern}
+        "2": {name: keyword.language.lambda.arrow.wyvern}
+

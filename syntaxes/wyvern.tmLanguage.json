@@ -53,8 +53,8 @@
           "match": "(\\+|-|\\*|\\/)"
         },
         {
-          "name": "meta.keyword.operator.lambda.wyvern",
-          "match": "(:)\\s*[a-zA-Z][a-zA-Z0-9\\.]*\\s*(=>)",
+          "name": "meta.keyword.operator.match.wyvern",
+          "match": "(:)\\s*(?:[a-zA-Z_](\\w|\\.)*)\\s*(=>)",
           "captures": {
             "1": {
               "name": "keyword.operator.match.option.colon.wyvern"
@@ -68,7 +68,7 @@
     },
     "type-annotation": {
       "name": "meta.storage.type.wyvern",
-      "match": ":\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]() ]|->|=>)+)",
+      "match": ":\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]()_ ]|->|=>)+)",
       "captures": {
         "1": {
           "name": "storage.type.wyvern"
@@ -77,7 +77,7 @@
     },
     "function-param": {
       "name": "meta.function.parameter.wyvern",
-      "match": "([a-zA-Z]\\w*)(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]() ]|->|=>)+))?",
+      "match": "((?:[a-zA-Z_]\\w*))(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]()_ ]|->|=>)+))?",
       "captures": {
         "1": {
           "name": "variable.parameter.wyvern"
@@ -89,7 +89,7 @@
     },
     "field-def": {
       "name": "meta.definition.field.wyvern",
-      "match": "\\b(val|var)\\s+([a-zA-Z]\\w*)(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]() ]|->|=>)+))?\\s*(=)",
+      "match": "\\b(val|var)\\s+((?:[a-zA-Z_]\\w*))(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]()_ ]|->|=>)+))?\\s*(=)",
       "captures": {
         "1": {
           "name": "storage.modifier.$1.wyvern"
@@ -107,7 +107,7 @@
     },
     "function-def": {
       "name": "meta.definition.function.wyvern",
-      "match": "\\b(def)\\s+([a-zA-Z]\\w*)\\s*\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\] ]|->|=>)+)",
+      "match": "\\b(def)\\s+((?:[a-zA-Z_]\\w*))\\s*\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\] ]|->|=>)+)",
       "captures": {
         "1": {
           "name": "storage.modifier.def.wyvern"
@@ -185,7 +185,7 @@
     },
     "function-call-expression": {
       "name": "meta.expression.function-call.wyvern",
-      "begin": "\\b([a-zA-Z]\\w*)\\(",
+      "begin": "\\b((?:[a-zA-Z_]\\w*))\\(",
       "beginCaptures": {
         "1": {
           "name": "entity.name.function.wyvern"
@@ -199,21 +199,37 @@
       ]
     },
     "lambda-expression-with-parens": {
-      "name": "meta.expression.lambda.wyvern",
-      "match": "\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*(=>)",
-      "captures": {
-        "1": {
-          "name": "meta.expression.lambda.arg-list.wyvern",
-          "patterns": [
-            {
-              "include": "#function-param"
+      "patterns": [
+        {
+          "name": "meta.expression.lambda.wyvern",
+          "match": "\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*(=>)",
+          "captures": {
+            "1": {
+              "name": "meta.expression.lambda.arg-list.wyvern",
+              "patterns": [
+                {
+                  "include": "#function-param"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.language.lambda.arrow.wyvern"
             }
-          ]
+          }
         },
-        "2": {
-          "name": "keyword.language.lambda.arrow.wyvern"
+        {
+          "name": "meta.expression.lambda.wyvern",
+          "match": "\\b((?:[a-zA-Z_]\\w*))\\s*(=>)",
+          "captures": {
+            "1": {
+              "name": "variable.parameter.wyvern"
+            },
+            "2": {
+              "name": "keyword.language.lambda.arrow.wyvern"
+            }
+          }
         }
-      }
+      ]
     }
   }
 }
