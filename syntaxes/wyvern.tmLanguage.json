@@ -1,32 +1,219 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "Wyvern",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.wyvern",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.wyvern",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.wyvern",
-					"match": "\\\\."
-				}
-			]
-		}
-	},
-	"scopeName": "source.wyvern"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Wyvern",
+  "scopeName": "source.wyvern",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#field-def"
+    },
+    {
+      "include": "#function-def"
+    },
+    {
+      "include": "#match-ctrl"
+    },
+    {
+      "include": "#expression"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "include": "#line-comment"
+        },
+        {
+          "include": "#block-comment"
+        }
+      ]
+    },
+    "line-comment": {
+      "name": "comment.line.double-slash.wyvern",
+      "match": "//.*"
+    },
+    "block-comment": {
+      "name": "comment.block.wyvern",
+      "begin": "/\\*",
+      "end": "\\*/"
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.wyvern",
+          "match": "\\b(if|elif|else)\\b"
+        },
+        {
+          "name": "keyword.operator.math.wyvern",
+          "match": "(\\+|-|\\*|\\/)"
+        },
+        {
+          "name": "meta.keyword.operator.lambda.wyvern",
+          "match": "(:)\\s*[a-zA-Z][a-zA-Z0-9\\.]*\\s*(=>)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.match.option.colon.wyvern"
+            },
+            "2": {
+              "name": "keyword.operator.match.option.arrow.wyvern"
+            }
+          }
+        }
+      ]
+    },
+    "type-annotation": {
+      "name": "meta.storage.type.wyvern",
+      "match": ":\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]() ]|->|=>)+)",
+      "captures": {
+        "1": {
+          "name": "storage.type.wyvern"
+        }
+      }
+    },
+    "function-param": {
+      "name": "meta.function.parameter.wyvern",
+      "match": "([a-zA-Z]\\w*)(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]() ]|->|=>)+))?",
+      "captures": {
+        "1": {
+          "name": "variable.parameter.wyvern"
+        },
+        "2": {
+          "name": "storage.type.wyvern"
+        }
+      }
+    },
+    "field-def": {
+      "name": "meta.definition.field.wyvern",
+      "match": "\\b(val|var)\\s+([a-zA-Z]\\w*)(?:\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\]() ]|->|=>)+))?\\s*(=)",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.$1.wyvern"
+        },
+        "2": {
+          "name": "entity.name.variable.wyvern"
+        },
+        "3": {
+          "name": "storage.type.wyvern"
+        },
+        "4": {
+          "name": "keyword.operator.assignment.wyvern"
+        }
+      }
+    },
+    "function-def": {
+      "name": "meta.definition.function.wyvern",
+      "match": "\\b(def)\\s+([a-zA-Z]\\w*)\\s*\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*:\\s*((?:[a-zA-Z0-9\\.\\*\\[\\] ]|->|=>)+)",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.def.wyvern"
+        },
+        "2": {
+          "name": "entity.name.function.wyvern"
+        },
+        "3": {
+          "name": "meta.function.arg-list.wyvern",
+          "patterns": [
+            {
+              "include": "#function-param"
+            }
+          ]
+        },
+        "4": {
+          "name": "storage.type.wyvern"
+        }
+      }
+    },
+    "match-ctrl": {
+      "name": "meta.control.match.wyvern",
+      "begin": "\\b(match)\\b",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.match.wyvern"
+        }
+      },
+      "end": "(:)",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.match.colon.wyvern"
+        }
+      }
+    },
+    "expression": {
+      "name": "meta.expression.wyvern",
+      "patterns": [
+        {
+          "include": "#function-call-expression"
+        },
+        {
+          "include": "#constant"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#lambda-expression-with-parens"
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "name": "constant.numeric.wyvern",
+          "match": "\\b[0-9]+(?:\\.[0-9]+)?\\b"
+        },
+        {
+          "name": "constant.language.unit.wyvern",
+          "match": "\\s\\(\\)"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.wyvern",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.wyvern",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "function-call-expression": {
+      "name": "meta.expression.function-call.wyvern",
+      "begin": "\\b([a-zA-Z]\\w*)\\(",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.wyvern"
+        }
+      },
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    "lambda-expression-with-parens": {
+      "name": "meta.expression.lambda.wyvern",
+      "match": "\\((?<args>(?>[^()]|\\(\\g<args>\\))*)\\)\\s*(=>)",
+      "captures": {
+        "1": {
+          "name": "meta.expression.lambda.arg-list.wyvern",
+          "patterns": [
+            {
+              "include": "#function-param"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.language.lambda.arrow.wyvern"
+        }
+      }
+    }
+  }
 }
