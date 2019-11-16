@@ -16,7 +16,7 @@
       "include": "#match-ctrl"
     },
     {
-      "include": "#expression"
+      "include": "#expressions"
     }
   ],
   "repository": {
@@ -182,20 +182,17 @@
     },
     "match-ctrl": {
       "name": "meta.control.match.wyvern",
-      "begin": "\\b(match)\\b",
-      "beginCaptures": {
+      "match": "\\b(match)\\s+(?:[a-zA-Z_](?:\\w|\\.)*)(:)",
+      "captures": {
         "1": {
           "name": "keyword.control.match.wyvern"
-        }
-      },
-      "end": "(:)",
-      "endCaptures": {
-        "1": {
+        },
+        "2": {
           "name": "keyword.control.match.colon.wyvern"
         }
       }
     },
-    "expression": {
+    "expressions": {
       "name": "meta.expression.wyvern",
       "patterns": [
         {
@@ -205,9 +202,6 @@
           "include": "#keywords"
         },
         {
-          "include": "#constant"
-        },
-        {
           "include": "#strings"
         },
         {
@@ -215,18 +209,17 @@
         },
         {
           "include": "#lambda-expression"
+        },
+        {
+          "include": "#constants"
         }
       ]
     },
-    "constant": {
+    "constants": {
       "patterns": [
         {
           "name": "constant.numeric.wyvern",
           "match": "\\b[0-9]+(?:\\.[0-9]+)?\\b"
-        },
-        {
-          "name": "constant.language.unit.wyvern",
-          "match": "\\s\\(\\)"
         }
       ]
     },

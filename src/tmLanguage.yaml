@@ -6,7 +6,7 @@ patterns:
 - {include: "#keywords"}
 - {include: "#definitions"}
 - {include: "#match-ctrl"}
-- {include: "#expression"}
+- {include: "#expressions"}
 repository:
   # comments
   comments:
@@ -103,30 +103,26 @@ repository:
   # control
   match-ctrl:
     name: meta.control.match.wyvern
-    begin: \b(match)\b
-    beginCaptures:
+    match: \b(match)\s+$$path$$(:)
+    captures:
       "1": {name: keyword.control.match.wyvern}
-    end: (:)
-    endCaptures:
-      "1": {name: keyword.control.match.colon.wyvern}
+      "2": {name: keyword.control.match.colon.wyvern}
   
   # expressions
-  expression:
+  expressions:
     name: meta.expression.wyvern
     patterns:
     - {include: "#comments"}
     - {include: "#keywords"}
-    - {include: "#constant"}
     - {include: "#strings"}
     - {include: "#function-call-expression"}
     - {include: "#lambda-expression"}
+    - {include: "#constants"}
 
-  constant:
+  constants:
     patterns:
     - name: constant.numeric.wyvern
       match: \b[0-9]+(?:\.[0-9]+)?\b
-    - name: constant.language.unit.wyvern
-      match: \s\(\)
 
   strings:
     name: string.quoted.double.wyvern
@@ -160,4 +156,3 @@ repository:
         "1": {name: variable.parameter.wyvern}
         "2": {name: storage.modifier.type.wyvern}
         "3": {name: keyword.language.lambda.arrow.wyvern}
-
