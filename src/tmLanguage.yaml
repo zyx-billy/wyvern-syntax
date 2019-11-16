@@ -23,26 +23,26 @@ repository:
     begin: /\*
     end: \*/
 
+  # reserved keywords
   keywords:
     patterns:
     - name: keyword.control.wyvern
       match: \b(if|elif|else)\b
     - name: keyword.operator.new.wyvern
       match: \bnew\b
+    - name: keyword.other.require.wyvern
+      match: \brequire\b
+    - name: keyword.other.import.wyvern
+      match: \bimport\b
     - name: keyword.operator.math.wyvern
       match: (\+|-|\*|\/)
+    - name: keyword.operator.equality.wyvern
+      match: (==|!=)
     - name: meta.keyword.operator.match.wyvern
       match: (:)\s*$$path$$\s*(=>)
       captures:
         "1": {name: keyword.operator.match.option.colon.wyvern}
         "2": {name: keyword.operator.match.option.arrow.wyvern}
-  
-  # types
-  type-annotation:
-    name: meta.storage.type.wyvern
-    match: :\s*$$C1-type$$
-    captures:
-      "1": {name: storage.type.wyvern}
 
   # parameters of a function/datatype definition
   param-decl:

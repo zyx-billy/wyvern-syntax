@@ -50,8 +50,20 @@
           "match": "\\bnew\\b"
         },
         {
+          "name": "keyword.other.require.wyvern",
+          "match": "\\brequire\\b"
+        },
+        {
+          "name": "keyword.other.import.wyvern",
+          "match": "\\bimport\\b"
+        },
+        {
           "name": "keyword.operator.math.wyvern",
           "match": "(\\+|-|\\*|\\/)"
+        },
+        {
+          "name": "keyword.operator.equality.wyvern",
+          "match": "(==|!=)"
         },
         {
           "name": "meta.keyword.operator.match.wyvern",
@@ -66,15 +78,6 @@
           }
         }
       ]
-    },
-    "type-annotation": {
-      "name": "meta.storage.type.wyvern",
-      "match": ":\\s*(?<type>(?>(?:[a-zA-Z0-9\\.\\*_ ]|->|=>)|\\(\\s*\\g<type>\\s*\\)|\\[\\s*\\g<type>\\s*\\])+)",
-      "captures": {
-        "1": {
-          "name": "storage.type.wyvern"
-        }
-      }
     },
     "param-decl": {
       "name": "meta.parameter.wyvern",
