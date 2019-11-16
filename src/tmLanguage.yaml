@@ -76,7 +76,7 @@ repository:
   function-def:
     name: meta.definition.function.wyvern
     # recursive regex definition for args list to make sure parentheses match
-    begin: \b(def)\s+($$ident$$)(?:\[($$ident$$)\])?\s*\(
+    begin: \b(def)\s+($$ident$$)(?:\[($$ident$$(?:\s*,\s*$$ident$$)*)\])?\s*\(
     beginCaptures:
       "1": {name: storage.modifier.def.wyvern}
       "2": {name: entity.name.function.wyvern}
@@ -167,16 +167,18 @@ repository:
   
   object-fields:
     name: meta.variable.other.object.property.wyvern
-    match: (?<=\.)($$ident$$)\b(?!\()
+    match: (?<=\.)($$ident$$)\b(?!\(|\[)
     captures:
       "1": {name: variable.other.object.property.wyvern}
 
   function-call-expression:
     name: meta.expression.function-call.wyvern
-    match: \b($$ident$$)(?:\[$$C1-type$$\])?\(
+    match: \b($$ident$$)(?:(\[)$$C1-type-list$$(\]))?\(
     captures:
       "1": {name: entity.name.function.wyvern}
-      "2": {name: storage.modifier.type.generic.wyvern}
+      "2": {name: entity.name.function.generic.wyvern}
+      "3": {name: storage.modifier.type.generic.wyvern}
+      "4": {name: entity.name.function.generic.wyvern}
   
   lambda-expression:
     patterns:

@@ -13,5 +13,6 @@
 path: (?:[a-zA-Z_](?:\w|\.)*)
 ident: (?:[a-zA-Z_]\w*)
 C1-type-option: (?:\s*:\s*$$$$C1-type$$$$)?
-C1-type: (?<type>(?>(?:[a-zA-Z0-9\.\*_ ]|->|=>)|\(\s*\g<type>\s*\)|\[\s*\g<type>\s*\])+)
+C1-type: (?<type>(?>(?:[a-zA-Z0-9\.\*_ ]|->|=>)|\(\s*\g<type>\s*\)|\[\s*\g<type>(?:\s*,\s*\g<type>)*\s*\])+)
+C1-type-list: (?<typelist>(?>(?:[a-zA-Z0-9\.\*_, ]|->|=>)|\(\s*\g<typelist>\s*\)|\[\s*\g<typelist>\s*\])+)
 C1-args: (?<args>(?>[^()]|\(\g<args>\))*)
