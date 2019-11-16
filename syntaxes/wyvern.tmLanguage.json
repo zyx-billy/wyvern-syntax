@@ -201,13 +201,16 @@
     },
     "datatype-def": {
       "name": "meta.definition.type.datatype.wyvern",
-      "begin": "^(\\s*)(datatype)\\s+((?:[a-zA-Z_]\\w*))",
+      "begin": "^(\\s*)(datatype)\\s+((?:[a-zA-Z_]\\w*))(?:\\[((?:[a-zA-Z_]\\w*))\\])?",
       "beginCaptures": {
         "2": {
           "name": "storage.modifier.datatype.wyvern"
         },
         "3": {
           "name": "entity.name.type.wyvern"
+        },
+        "4": {
+          "name": "entity.name.type.generic.wyvern"
         }
       },
       "end": "^(?!\\1\\s)",
@@ -273,10 +276,13 @@
     },
     "function-call-expression": {
       "name": "meta.expression.function-call.wyvern",
-      "match": "\\b((?:[a-zA-Z_]\\w*))\\(",
+      "match": "\\b((?:[a-zA-Z_]\\w*))(?:\\[(?<type>(?>(?:[a-zA-Z0-9\\.\\*_ ]|->|=>)|\\(\\s*\\g<type>\\s*\\)|\\[\\s*\\g<type>\\s*\\])+)\\])?\\(",
       "captures": {
         "1": {
           "name": "entity.name.function.wyvern"
+        },
+        "2": {
+          "name": "storage.modifier.type.generic.wyvern"
         }
       }
     },

@@ -72,10 +72,11 @@ repository:
   function-def:
     name: meta.definition.function.wyvern
     # recursive regex definition for args list to make sure parentheses match
-    begin: \b(def)\s+($$ident$$)\s*\(
+    begin: \b(def)\s+($$ident$$)(?:\[($$ident$$)\])?\s*\(
     beginCaptures:
       "1": {name: storage.modifier.def.wyvern}
       "2": {name: entity.name.function.wyvern}
+      "3": {name: entity.name.type.generic.wyvern}
     end: \)$$C1-type-option$$
     endCaptures:
       "1": {name: storage.type.wyvern}
@@ -111,10 +112,11 @@ repository:
 
   datatype-def:
     name: meta.definition.type.datatype.wyvern
-    begin: ^(\s*)(datatype)\s+($$ident$$)
+    begin: ^(\s*)(datatype)\s+($$ident$$)(?:\[($$ident$$)\])?
     beginCaptures:
       "2": {name: storage.modifier.datatype.wyvern}
       "3": {name: entity.name.type.wyvern}
+      "4": {name: entity.name.type.generic.wyvern}
     end: ^(?!\1\s)
     patterns:
     - {include: "#datatype-variant"}
@@ -153,9 +155,10 @@ repository:
 
   function-call-expression:
     name: meta.expression.function-call.wyvern
-    match: \b($$ident$$)\(
+    match: \b($$ident$$)(?:\[$$C1-type$$\])?\(
     captures:
       "1": {name: entity.name.function.wyvern}
+      "2": {name: storage.modifier.type.generic.wyvern}
   
   lambda-expression:
     patterns:
