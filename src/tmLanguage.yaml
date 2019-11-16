@@ -44,9 +44,9 @@ repository:
     captures:
       "1": {name: storage.type.wyvern}
 
-  # parameters of a function definition
-  function-param:
-    name: meta.function.parameter.wyvern
+  # parameters of a function/datatype definition
+  param-decl:
+    name: meta.parameter.wyvern
     match: ($$ident$$)$$C1-type-option$$
     captures:
       "1": {name: variable.parameter.wyvern}
@@ -83,7 +83,7 @@ repository:
     - name: meta.function.arg-list.wyvern
       patterns:
       - {include: "#comments"}
-      - {include: "#function-param"}
+      - {include: "#param-decl"}
 
   objtype-def:
     name: meta.definition.type.wyvern
@@ -93,12 +93,31 @@ repository:
       "2": {name: storage.modifier.type.wyvern}
       "3": {name: entity.name.type.wyvern}
 
+  datatype-variant:
+    patterns:
+    # variants that have parameters
+    - name: meta.definition.type.datatype.variant.wyvern
+      begin: \b($$ident$$)\s*\(
+      beginCaptures:
+        "1": {name: entity.name.type.datatype.variant.wyvern}
+      end: \)
+      patterns:
+      - {include: "#param-decl"}
+    # variants without parameters
+    - name: meta.definition.type.datatype.variant.wyvern
+      match: \b($$ident$$)(?!\()
+      captures:
+        "1": {name: entity.name.type.datatype.variant.wyvern}
+
   datatype-def:
-    name: meta.definition.datatype.wyvern
-    match: \b(datatype)\s+($$ident$$)
-    captures:
-      "1": {name: storage.modifier.datatype.wyvern}
-      "2": {name: entity.name.type.wyvern}
+    name: meta.definition.type.datatype.wyvern
+    begin: ^(\s*)(datatype)\s+($$ident$$)
+    beginCaptures:
+      "2": {name: storage.modifier.datatype.wyvern}
+      "3": {name: entity.name.type.wyvern}
+    end: ^(?!\1\s)
+    patterns:
+    - {include: "#datatype-variant"}
 
   # control
   match-ctrl:
@@ -147,7 +166,7 @@ repository:
         "1":
           name: meta.expression.lambda.arg-list.wyvern
           patterns:
-          - {include: "#function-param"}
+          - {include: "#param-decl"}
         "2": {name: keyword.language.lambda.arrow.wyvern}
     # lambda expressions without parens (only one argument)
     - name: meta.expression.lambda.wyvern
