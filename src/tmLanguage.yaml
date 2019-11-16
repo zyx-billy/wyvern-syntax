@@ -34,6 +34,8 @@ repository:
       match: \brequire\b
     - name: keyword.other.import.wyvern
       match: \bimport\b
+    - name: keyword.other.assert.wyvern
+      match: \bassert\b
     - name: keyword.operator.math.wyvern
       match: (\+|-|\*|\/)
     - name: keyword.operator.comparison.wyvern
