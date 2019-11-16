@@ -62,6 +62,7 @@ repository:
     - {include: "#field-def"}
     - {include: "#function-def"}
     - {include: "#objtype-def"}
+    - {include: "#objtype-def-keywords"}
     - {include: "#datatype-def"}
 
   field-def:
@@ -92,11 +93,26 @@ repository:
 
   objtype-def:
     name: meta.definition.type.wyvern
-    match: \b(?>(resource)\s+)?(type)\s+($$ident$$)
+    match: \b(type)\s+($$ident$$)
     captures:
-      "1": {name: storage.modifier.resource.wyvern}
-      "2": {name: storage.modifier.type.wyvern}
-      "3": {name: entity.name.type.wyvern}
+      "1": {name: storage.modifier.type.wyvern}
+      "2": {name: entity.name.type.wyvern}
+
+  objtype-def-keywords:
+    patterns:
+    - name: storage.modifier.wyvern
+      match: \b(resource|tagged)\b
+    - name: meta.storage.modifier.extends.wyvern
+      match: \b(extends)\s+($$path$$)
+      captures:
+        "1": {name: storage.modifier.extends.wyvern}
+        "2": {name: entity.name.type.wyvern}
+    - name: meta.storage.modifier.comprises.wyvern
+      match: \b(comprises)\s+($$path$$)(?:\s*,\s*($$path$$))*
+      captures:
+        "1": {name: storage.modifier.comprises.wyvern}
+        "2": {name: entity.name.type.wyvern}
+        "3": {name: entity.name.type.wyvern}
 
   datatype-variant:
     patterns:
