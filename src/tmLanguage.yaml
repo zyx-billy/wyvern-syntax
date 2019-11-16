@@ -64,6 +64,7 @@ repository:
     - {include: "#objtype-def"}
     - {include: "#objtype-def-keywords"}
     - {include: "#datatype-def"}
+    - {include: "#module-def"}
 
   field-def:
     name: meta.definition.field.wyvern
@@ -140,6 +141,12 @@ repository:
     end: ^(?!\1\s)
     patterns:
     - {include: "#datatype-variant"}
+
+  module-def:
+    name: meta.definition.type.module.wyvern
+    match: \b(module)\b
+    captures:
+      "1": {name: storage.modifier.module.wyvern}
 
   # control
   match-ctrl:

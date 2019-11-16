@@ -115,6 +115,9 @@
         },
         {
           "include": "#datatype-def"
+        },
+        {
+          "include": "#module-def"
         }
       ]
     },
@@ -265,6 +268,15 @@
           "include": "#datatype-variant"
         }
       ]
+    },
+    "module-def": {
+      "name": "meta.definition.type.module.wyvern",
+      "match": "\\b(module)\\b",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.module.wyvern"
+        }
+      }
     },
     "match-ctrl": {
       "name": "meta.control.match.wyvern",
