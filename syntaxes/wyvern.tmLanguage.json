@@ -127,13 +127,16 @@
     },
     "function-def": {
       "name": "meta.definition.function.wyvern",
-      "begin": "\\b(def)\\s+((?:[a-zA-Z_]\\w*))\\s*\\(",
+      "begin": "\\b(def)\\s+((?:[a-zA-Z_]\\w*))(?:\\[((?:[a-zA-Z_]\\w*))\\])?\\s*\\(",
       "beginCaptures": {
         "1": {
           "name": "storage.modifier.def.wyvern"
         },
         "2": {
           "name": "entity.name.function.wyvern"
+        },
+        "3": {
+          "name": "entity.name.type.generic.wyvern"
         }
       },
       "end": "\\)(?:\\s*:\\s*(?<type>(?>(?:[a-zA-Z0-9\\.\\*_ ]|->|=>)|\\(\\s*\\g<type>\\s*\\)|\\[\\s*\\g<type>\\s*\\])+))?",
@@ -245,6 +248,12 @@
           "include": "#strings"
         },
         {
+          "include": "#objects"
+        },
+        {
+          "include": "#object-fields"
+        },
+        {
           "include": "#function-call-expression"
         },
         {
@@ -273,6 +282,24 @@
           "match": "\\\\."
         }
       ]
+    },
+    "objects": {
+      "name": "meta.variable.other.object.wyvern",
+      "match": "\\b((?:[a-zA-Z_]\\w*))(?=\\.)",
+      "captures": {
+        "1": {
+          "name": "variable.other.object.wyvern"
+        }
+      }
+    },
+    "object-fields": {
+      "name": "meta.variable.other.object.property.wyvern",
+      "match": "(?<=\\.)((?:[a-zA-Z_]\\w*))\\b(?!\\()",
+      "captures": {
+        "1": {
+          "name": "variable.other.object.property.wyvern"
+        }
+      }
     },
     "function-call-expression": {
       "name": "meta.expression.function-call.wyvern",

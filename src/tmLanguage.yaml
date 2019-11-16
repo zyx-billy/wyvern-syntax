@@ -136,6 +136,8 @@ repository:
     - {include: "#comments"}
     - {include: "#keywords"}
     - {include: "#strings"}
+    - {include: "#objects"}
+    - {include: "#object-fields"}
     - {include: "#function-call-expression"}
     - {include: "#lambda-expression"}
     - {include: "#constants"}
@@ -152,6 +154,18 @@ repository:
     patterns:
     - name: constant.character.escape.wyvern
       match: \\.
+
+  objects:
+    name: meta.variable.other.object.wyvern
+    match: \b($$ident$$)(?=\.)
+    captures:
+      "1": {name: variable.other.object.wyvern}
+  
+  object-fields:
+    name: meta.variable.other.object.property.wyvern
+    match: (?<=\.)($$ident$$)\b(?!\()
+    captures:
+      "1": {name: variable.other.object.property.wyvern}
 
   function-call-expression:
     name: meta.expression.function-call.wyvern
