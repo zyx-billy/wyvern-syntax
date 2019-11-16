@@ -62,8 +62,12 @@
           "match": "(\\+|-|\\*|\\/)"
         },
         {
-          "name": "keyword.operator.equality.wyvern",
-          "match": "(==|!=)"
+          "name": "keyword.operator.comparison.wyvern",
+          "match": "(==|!=|<=|>=|<|>)"
+        },
+        {
+          "name": "keyword.operator.boolean.wyvern",
+          "match": "(&&|\\|\\|)"
         },
         {
           "name": "meta.keyword.operator.match.wyvern",

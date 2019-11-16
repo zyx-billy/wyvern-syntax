@@ -36,8 +36,10 @@ repository:
       match: \bimport\b
     - name: keyword.operator.math.wyvern
       match: (\+|-|\*|\/)
-    - name: keyword.operator.equality.wyvern
-      match: (==|!=)
+    - name: keyword.operator.comparison.wyvern
+      match: (==|!=|<=|>=|<|>)
+    - name: keyword.operator.boolean.wyvern
+      match: (&&|\|\|)
     - name: meta.keyword.operator.match.wyvern
       match: (:)\s*$$path$$\s*(=>)
       captures:
