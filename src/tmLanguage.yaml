@@ -40,14 +40,14 @@ repository:
   # types
   type-annotation:
     name: meta.storage.type.wyvern
-    match: :\s*($$type$$)
+    match: :\s*$$C1-type$$
     captures:
       "1": {name: storage.type.wyvern}
 
   # parameters of a function definition
   function-param:
     name: meta.function.parameter.wyvern
-    match: ($$ident$$)(?:\s*:\s*($$type$$))?
+    match: ($$ident$$)$$C1-type-option$$
     captures:
       "1": {name: variable.parameter.wyvern}
       "2": {name: storage.type.wyvern}
@@ -62,7 +62,7 @@ repository:
 
   field-def:
     name: meta.definition.field.wyvern
-    match: \b(val|var)\s+($$ident$$)(?:\s*:\s*($$type$$))?\s*(=)?
+    match: \b(val|var)\s+($$ident$$)$$C1-type-option$$\s*(=)?
     captures:
       "1": {name: storage.modifier.$1.wyvern}
       "2": {name: entity.name.variable.wyvern}
@@ -70,19 +70,20 @@ repository:
       "4": {name: keyword.operator.assignment.wyvern}
 
   function-def:
+    name: meta.definition.function.wyvern
+    # recursive regex definition for args list to make sure parentheses match
+    begin: \b(def)\s+($$ident$$)\s*\(
+    beginCaptures:
+      "1": {name: storage.modifier.def.wyvern}
+      "2": {name: entity.name.function.wyvern}
+    end: \)$$C1-type-option$$
+    endCaptures:
+      "1": {name: storage.type.wyvern}
     patterns:
-    - name: meta.definition.function.wyvern
-      # recursive regex definition for args list to make sure parentheses match
-      match: \b(def)\s+($$ident$$)\s*\($$args$$\)\s*:\s*($$type$$)
-      captures:
-        "1": {name: storage.modifier.def.wyvern}
-        "2": {name: entity.name.function.wyvern}
-        "3":
-          name: meta.function.arg-list.wyvern
-          patterns:
-          - {include: "#comments"}
-          - {include: "#function-param"}
-        "4": {name: storage.type.wyvern}
+    - name: meta.function.arg-list.wyvern
+      patterns:
+      - {include: "#comments"}
+      - {include: "#function-param"}
 
   objtype-def:
     name: meta.definition.type.wyvern
@@ -118,7 +119,7 @@ repository:
     - {include: "#constant"}
     - {include: "#strings"}
     - {include: "#function-call-expression"}
-    - {include: "#lambda-expression-with-parens"}
+    - {include: "#lambda-expression"}
 
   constant:
     patterns:
@@ -137,28 +138,26 @@ repository:
 
   function-call-expression:
     name: meta.expression.function-call.wyvern
-    match: \b($$ident$$)\($$args$$\)
+    match: \b($$ident$$)\(
     captures:
       "1": {name: entity.name.function.wyvern}
-      "2":
-        name: meta.expression.function-call.arg-list.wyvern
-        patterns:
-        - {include: "#expression"}
   
-  lambda-expression-with-parens:
+  lambda-expression:
     patterns:
-      # lambda expressions without parens are included in the keywords rule (with match)
+    # lambda expressions with parens
     - name: meta.expression.lambda.wyvern
-      match: \($$args$$\)\s*(=>)
+      match: \($$C1-args$$\)\s*(=>)
       captures:
         "1":
           name: meta.expression.lambda.arg-list.wyvern
           patterns:
           - {include: "#function-param"}
         "2": {name: keyword.language.lambda.arrow.wyvern}
+    # lambda expressions without parens (only one argument)
     - name: meta.expression.lambda.wyvern
-      match: \b($$ident$$)\s*(=>)
+      match: \b($$ident$$)$$C1-type-option$$\s*(=>)
       captures:
         "1": {name: variable.parameter.wyvern}
-        "2": {name: keyword.language.lambda.arrow.wyvern}
+        "2": {name: storage.modifier.type.wyvern}
+        "3": {name: keyword.language.lambda.arrow.wyvern}
 

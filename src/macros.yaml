@@ -1,5 +1,17 @@
-# WARNING: macros should must not contain capture groups
+# - Capture:
+# Macros should in general not contain capture groups.
+# Those that do contain capture groups should be prefixed with 'Cn-' where
+# n is the number of capture groups the macro contains
+#
+# - Referencing other macros:
+# Macros are replaced from first to last in order. Therefore, macros are
+# only allowed to reference macros that come later in the macro file.
+# Note that quad-dollar-signs are needed when referencing other macros
+# in the macro file. This is due to escaping behavior of dollar signs in
+# yaml files
+
 path: (?:[a-zA-Z_](?:\w|\.)*)
 ident: (?:[a-zA-Z_]\w*)
-type: (?:[a-zA-Z0-9\.\*\[\]()_ ]|->|=>)+
-args: (?<args>(?>[^()/]|\(\g<args>\))*)
+C1-type-option: (?:\s*:\s*$$$$C1-type$$$$)?
+C1-type: (?<type>(?>(?:[a-zA-Z0-9\.\*_ ]|->|=>)|\(\s*\g<type>\s*\)|\[\s*\g<type>\s*\])+)
+C1-args: (?<args>(?>[^()]|\(\g<args>\))*)
