@@ -3,6 +3,7 @@
     "displayName": "Wyvern Lang",
     "description": "Syntax highlighting for the Wyvern programming language",
     "version": "0.0.1",
+    "publisher": "wyvern",
     "engines": {
         "vscode": "^1.40.0"
     },
