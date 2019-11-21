@@ -32,10 +32,12 @@
             }
         ]
     },
-    "dependencies": {
-        "fs": "0.0.1-security"
-    },
+    "dependencies": {},
     "devDependencies": {
+        "fs": "0.0.1-security",
         "js-yaml": "^3.13.1"
+    },
+    "scripts": {
+        "vscode:prepublish": "node src/build_syntax.js"
     }
 }
