@@ -27,7 +27,7 @@ repository:
   keywords:
     patterns:
     - name: keyword.control.wyvern
-      match: \b(if|elif|else)\b
+      match: \b(if|elif|else|recur)\b
     - name: keyword.operator.new.wyvern
       match: \bnew\b
     - name: keyword.other.require.wyvern
