@@ -141,6 +141,7 @@ repository:
     # stop at empty line or no indent
     end: ^\s*$|^\S
     patterns:
+    - {include: "#comments"}
     - {include: "#datatype-variant"}
 
   module-def:
