@@ -35,3 +35,9 @@ Since many rules in the grammar may have overlapping components, the build scrip
 Macros are defined in the `src/macros.yaml` file. During build, `src/tmLanguage.yaml` will first be scanned for strings of the form ``$$key$$`` where `key` is the name of a macro defined in the macro settings file. Each instance will be replaced with the string mapped to by `key` in the macro settings. This step is performed before parsing the grammar YAML file, so the double dollar signs do not need to be escaped.
 
 Additional warnings on macro usage is described in the macro settings file.
+
+#### Package Extension
+
+Install the Visual Studio Code Extensions tool (`vsce`) with npm, and run `vsce package` at the repo root to package the repo into an extension. The syntax will always be rebuilt prior to packaging.
+
+To install the unpublished extension locally, run `code --install-extension wyvern-syntax-<version>.vsix`.
