@@ -1,6 +1,6 @@
 {
     "name": "wyvern-syntax",
-    "displayName": "Wyvern Lang",
+    "displayName": "Wyvern Syntax",
     "description": "Syntax highlighting for the Wyvern programming language",
     "version": "0.0.1",
     "publisher": "zyx-billy",
