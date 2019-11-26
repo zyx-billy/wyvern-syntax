@@ -1,9 +1,10 @@
 {
-    "name": "wyvern-lang",
+    "name": "wyvern-syntax",
     "displayName": "Wyvern Lang",
     "description": "Syntax highlighting for the Wyvern programming language",
     "version": "0.0.1",
-    "publisher": "wyvern",
+    "publisher": "zyx-billy",
+    "repository": "https://github.com/zyx-billy/wyvern-syntax",
     "engines": {
         "vscode": "^1.40.0"
     },

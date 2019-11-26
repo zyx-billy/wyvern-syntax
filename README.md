@@ -1,6 +1,6 @@
-# wyvern-lang
+# wyvern-syntax
 
-This is a VS Code language extension for the [Wyvern programming language](https://wyvernlang.github.io/).
+A VS Code language extension for the [Wyvern programming language](https://wyvernlang.github.io/).
 
 ## Features
 
